@@ -968,6 +968,14 @@ class OperatorTest(QueryTest, AssertsCompiledSQL):
         self._test(a1.user != None, "addresses_1.user_id IS NOT NULL")
         self._test(~(a1.user != None), "addresses_1.user_id IS NULL")
 
+    def test_relationship_compares_to_null(self):
+        Address = self.classes.Address
+        self._test(Address.user == self.classes.User(id=12), u':param_1 = addresses.user_id')
+
+    def test_relationship_compare_to_null(self):
+        Address = self.classes.Address
+        self._test(Address.user == self.classes.User(id=None), u'addresses_1.user_id IS NULL')
+
     def test_relationship_unimplemented(self):
         User = self.classes.User
         for op in [
